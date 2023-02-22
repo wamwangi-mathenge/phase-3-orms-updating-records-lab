@@ -60,5 +60,28 @@ class Student
     student.save
   end
 
+  # def self.new_from_db(row)
+  #   # self.new is equivalent to Student.new
+  #   Student.new(id: row[0], name: row[1], grade: row[2])
+  # end
+
+  def self.new_from_db(row)
+    id = row[0]
+    name = row[1]
+    grade = row[2]
+
+    self.new(name, grade, id)
+  end
+
+  def self.find_by_name(name)
+    sql = <<-SQL
+      SELECT * FROM students WHERE name = ? LIMIT 1
+    SQL
+
+    DB[:conn].execute(sql, name).map do |row|
+      Student.new_from_db(row)
+    end.first
+  end
+
 
 end
