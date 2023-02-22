@@ -55,5 +55,10 @@ class Student
     DB[:conn].execute(sql, self.name, self.grade, self.id)
   end
 
+  def self.new_from_db(row)
+    student = Student.new(name: name, grade: grade)
+    student.save
+  end
+
 
 end
